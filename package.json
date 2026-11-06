@@ -1,0 +1,18 @@
+{
+  "name": "cant-stop-class",
+  "private": true,
+  "version": "1.0.0",
+  "description": "캔트 스탑 온라인 + 경우의 수 퀴즈 (중2 확률)",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build.mjs --serve",
+    "build": "tsc --noEmit && node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "esbuild tests/rules.test.ts --bundle --platform=node --format=esm --outfile=.test-build/rules.test.mjs --log-level=warning && node --test .test-build/rules.test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.0"
+  }
+}
