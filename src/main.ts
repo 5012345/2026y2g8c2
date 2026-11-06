@@ -8,6 +8,7 @@ import { isMuted, play, setMuted } from './lib/sound';
 import { FirebaseStore } from './net/firebaseStore';
 import { LocalStore } from './net/localStore';
 import { readFirebaseConfig, type RoomStore } from './net/store';
+import { sceneSvg } from './ui/html';
 import {
   animElapsed, animTimeline, clock, renderGame, renderHelp, renderHome, renderLobby, renderMissing,
   type HomeForm, type Role, type ViewCtx,
@@ -545,6 +546,11 @@ document.addEventListener('keydown', (e) => {
 
 // ───────────── 시작 ─────────────
 async function boot() {
+  // 산 풍경 배경 (한 번만)
+  const scene = document.createElement('div');
+  scene.className = 'scene';
+  scene.innerHTML = sceneSvg();
+  document.body.prepend(scene);
   render();
   const cfg = readFirebaseConfig();
   const store: RoomStore = cfg ? new FirebaseStore(cfg) : new LocalStore();
