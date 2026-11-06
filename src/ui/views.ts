@@ -6,7 +6,7 @@ import {
 } from '../game/types';
 import { qrSvg } from '../lib/qr';
 import { isMuted } from '../lib/sound';
-import { colorOf, die8, esc, icon } from './html';
+import { colorOf, die8, esc, icon, peakLogo } from './html';
 
 export type Role = 'host' | 'watch' | 'team';
 
@@ -136,7 +136,7 @@ export function renderHome(form: HomeForm, ctx: ViewCtx): string {
   }
   return `<main class="home">
     <header class="brand">
-      <div class="logo">${die8(9)}${die8(5)}</div>
+      <div class="logo">${die8(9)}${peakLogo()}${die8(5)}</div>
       <h1>캔트 스탑 <span class="ver">모둠 대전</span></h1>
       <p class="tagline">정팔면체 주사위 · 15개의 등산로 · <b>경우의 수</b> 퀴즈</p>
     </header>
@@ -301,7 +301,10 @@ export function renderBoard(room: Room, ctx: ViewCtx, elapsed: number | null): s
     return `<div class="col ${owners.length ? 'claimed' : ''} ${myCols.has(col) ? 'mine' : ''}" data-col="${col}" style="${owners.length ? `--owner:${ownerColor}` : ''}">
       ${cells.join('')}<div class="col-label">${col}</div>${prob}</div>`;
   }).join('');
-  return `<div class="board" role="img" aria-label="등산로 게임판">${cols}</div>`;
+  return `<div class="board" role="img" aria-label="등산로 게임판">
+    <div class="ridge">${cols}</div>
+    <div class="basecamp"><span>⛺ 베이스캠프 · 출발점</span></div>
+  </div>`;
 }
 
 // ───────────── 퀴즈 ─────────────

@@ -57,3 +57,49 @@ export function subj(name: string): string {
   const j = last >= 0 && last < 11172 ? (last % 28 === 0 ? '가' : '이') : '(이)가';
   return esc(name) + j;
 }
+
+/** 배경 풍경 (하늘·해·구름·겹겹이 산·숲) — 한 번만 그려 body 뒤에 고정 */
+export function sceneSvg(): string {
+  const pines = (y: number, n: number, seed: number, color: string, h: number) => {
+    let out = '';
+    for (let i = 0; i < n; i++) {
+      const x = ((i * 97 + seed * 31) % 1600) + ((i * 13) % 20);
+      const hh = h * (0.7 + ((i * 7 + seed) % 5) / 10);
+      out += `<path d="M${x} ${y} l${hh * 0.32} ${-hh} l${hh * 0.32} ${hh}Z" fill="${color}"/>`;
+    }
+    return out;
+  };
+  return `<svg class="scene-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#9fd3f2"/><stop offset=".55" stop-color="#d6eefa"/><stop offset="1" stop-color="#fff4df"/>
+      </linearGradient>
+      <linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9cfe0"/><stop offset="1" stop-color="#d7e4ec"/></linearGradient>
+      <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fae9c"/><stop offset="1" stop-color="#a9c4ae"/></linearGradient>
+      <linearGradient id="near" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6f9a6e"/><stop offset="1" stop-color="#86ad78"/></linearGradient>
+    </defs>
+    <rect width="1600" height="900" fill="url(#sky)"/>
+    <circle cx="1270" cy="170" r="70" fill="#fff6c9" opacity=".9"/>
+    <circle cx="1270" cy="170" r="110" fill="#fff6c9" opacity=".25"/>
+    <g fill="#fff" opacity=".85">
+      <ellipse cx="260" cy="150" rx="90" ry="26"/><ellipse cx="320" cy="135" rx="60" ry="30"/><ellipse cx="200" cy="140" rx="50" ry="22"/>
+      <ellipse cx="900" cy="95" rx="70" ry="18"/><ellipse cx="950" cy="85" rx="45" ry="22"/>
+    </g>
+    <path d="M0 560 L120 470 L210 520 L360 360 L470 450 L560 400 L700 250 L820 380 L900 330 L1040 460 L1150 370 L1290 280 L1420 420 L1520 380 L1600 430 V900 H0Z" fill="url(#far)"/>
+    <path d="M700 250 L740 293 L722 300 L705 286 L686 298 L668 286Z M1290 280 L1330 323 L1310 330 L1292 318 L1272 330 L1254 316Z M360 360 L392 398 L376 404 L360 392 L344 404 L330 393Z" fill="#fff" opacity=".9"/>
+    <path d="M0 650 L150 560 L300 620 L450 540 L620 610 L780 520 L940 600 L1100 530 L1260 600 L1420 540 L1600 590 V900 H0Z" fill="url(#mid)"/>
+    ${pines(640, 26, 3, '#6f917c', 46)}
+    <path d="M0 760 C200 700 360 730 520 700 C700 665 860 720 1040 690 C1220 660 1400 700 1600 680 V900 H0Z" fill="url(#near)"/>
+    ${pines(760, 34, 7, '#4f7b55', 58)}
+    <path d="M0 840 C260 800 520 830 800 810 C1080 790 1340 820 1600 800 V900 H0Z" fill="#5c8a5a"/>
+  </svg>`;
+}
+
+/** 로고용 작은 산 */
+export function peakLogo(): string {
+  return `<svg class="peak-logo" viewBox="0 0 120 70" aria-hidden="true">
+    <path d="M4 66 L40 22 L54 38 L72 10 L116 66Z" fill="#5f8a6a"/>
+    <path d="M72 10 L84 26 L77 24 L72 30 L66 23 L61 26Z M40 22 L48 32 L43 31 L39 35 L35 30Z" fill="#fff"/>
+    <path d="M72 10 V-4" stroke="#7a4a1e" stroke-width="2.5"/><path d="M72 -4 L88 1 L72 6Z" fill="#e8590c"/>
+  </svg>`;
+}
