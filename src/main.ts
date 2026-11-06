@@ -171,7 +171,11 @@ function onRoom(next: Room | null) {
     return;
   }
   state.missing = false;
-  if (state.role === 'team' && next.status === 'lobby' && !next.teams.some((t) => t.id === meId)) {
+  // 선생님이 내보낸 경우: 직전까지 명단에 있다가 빠졌을 때만 처리.
+  // (Firestore는 입장 직후 '입장 전' 캐시 스냅샷을 먼저 보낼 수 있어서, 처음부터 없는 경우는 무시)
+  const inPrev = !!prev?.teams.some((t) => t.id === meId);
+  const inNext = next.teams.some((t) => t.id === meId);
+  if (state.role === 'team' && next.status === 'lobby' && inPrev && !inNext) {
     goHome();
     toast('방에서 나왔어요.');
     return;
